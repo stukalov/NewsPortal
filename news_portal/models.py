@@ -8,14 +8,18 @@ class Author(models.Model):
     rate = models.SmallIntegerField(default=0)
 
     def update_rating(self):
+        # суммарный рейтинг каждой статьи автора умножается на 3
         aggregate = self.post_set.aggregate(rate=Sum('rate'))
-        result = aggregate.rate * 3
+        result = aggregate['rate'] * 3
+        # суммарный рейтинг всех комментариев автора;
         aggregate = self.user.comment_set.aggregate(rate=Sum('rate'))
-        result += aggregate.rate
+        result += aggregate['rate']
+        # суммарный рейтинг всех комментариев к статьям автора.
         aggregate = self.post_set.aggregate(rate=Sum('comment__rate'))
-        result += aggregate.rate
+        result += aggregate['rate']
         self.rate = result
         self.save()
+        return result
 
 
 class Category(models.Model):
@@ -30,7 +34,7 @@ class Post(models.Model):
         (NEWS, 'Новость'),
     )
 
-    user = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     type = models.CharField(max_length=2, choices=TYPES, default=ARTICLE)
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
