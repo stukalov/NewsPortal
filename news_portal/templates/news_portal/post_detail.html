@@ -1,0 +1,20 @@
+{% extends 'default.html' %}
+
+{% load news_filters %}!
+
+{% block title %}
+  {{ post.title }}
+{% endblock %}
+
+{% block content %}
+<h1>
+  {{ post.title }}
+</h1>
+<div>
+  {{ post.created|date_formatter:"%d.%m.%Y" }}
+</div>
+<div>
+  {{ post.body|news_censor }}
+</div>
+{% endblock %}
+
