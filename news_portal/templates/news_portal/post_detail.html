@@ -8,7 +8,7 @@
 
 {% block content %}
 <h1>
-  {{ post.title }}
+  {{ post.title|news_censor }}
 </h1>
 <div>
   {{ post.created|date_formatter:"%d.%m.%Y" }}
