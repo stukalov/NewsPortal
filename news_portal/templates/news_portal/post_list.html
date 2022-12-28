@@ -3,35 +3,64 @@
 {% load news_filters %}!
 
 {% block content %}
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Заголовок</th>
-      <th scope="col">Дата</th>
-      <th scope="col">Тизер</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for post in posts %}
+  <form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти" />
+  </form>
+
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td>
-          <a href="/news/{{ post.id }}/">
-            {{ post.title }}
-          </a>
-        </td>
-        <td>
-          <a href="/news/{{ post.id }}/">
-            {{ post.created|date_formatter }}
-          </a>
-        </td>
-        <td>
-          <a href="/news/{{ post.id }}/">
-            {{ post.body|truncatechars:20 }}
-          </a>
-        </td>
+        <th scope="col">Заголовок</th>
+        <th scope="col">Дата</th>
+        <th scope="col">Тизер</th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+        <tr>
+          <td>
+            <a href="/news/{{ post.id }}/">
+              {{ post.title }}
+            </a>
+          </td>
+          <td>
+            <a href="/news/{{ post.id }}/">
+              {{ post.created|date_formatter }}
+            </a>
+          </td>
+          <td>
+            <a href="/news/{{ post.id }}/">
+              {{ post.body|truncatechars:20 }}
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {# Добавляем пагинацию на страницу #}
+
+  {# Информация о предыдущих страницах #}
+  {% if page_obj.has_previous %}
+    <a href="?page=1">1</a>
+    {% if page_obj.previous_page_number != 1 %}
+        ...
+      <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+    {% endif %}
+  {% endif %}
+
+  {# Информация о текущей странице #}
+  {{ page_obj.number }}
+
+  {# Информация о следующих страницах #}
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+    {% if paginator.num_pages != page_obj.next_page_number %}
+      ...
+      <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+    {% endif %}
+  {% endif %}
+
 {% endblock %}
 
