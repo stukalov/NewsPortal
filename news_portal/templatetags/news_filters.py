@@ -27,3 +27,10 @@ def news_censor(value):
         return f'{s[0]}{mid}{s[-1]}'
 
     return re.sub(regexp, replace, value, flags=re.IGNORECASE)
+
+@register.simple_tag(takes_context=True)
+def url_replace(context, **kwargs):
+   d = context['request'].GET.copy()
+   for k, v in kwargs.items():
+       d[k] = v
+   return d.urlencode()

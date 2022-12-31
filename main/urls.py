@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from news_portal.urls import news_urlpatterns, articles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    path('news/', include('news_portal.urls')),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path('news/', include(news_urlpatterns)),
+    path('articles/', include(articles_urlpatterns)),
 ]
