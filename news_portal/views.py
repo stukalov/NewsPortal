@@ -64,7 +64,7 @@ class PostCreate(PermissionRequiredMixin, CreateView):
 
 class PostUpdate(PermissionRequiredMixin, UpdateView):
     raise_exception = True
-    permission_required = 'news_portal.edit_post'
+    permission_required = 'news_portal.change_post'
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
