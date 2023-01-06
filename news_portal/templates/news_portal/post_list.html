@@ -10,12 +10,21 @@
     </form>
   {% endif %}
 
+  {% if perms.news_portal.add_post %}
+    <a href="{% url 'news_create' %}">Добавить новость</a>
+    &nbsp;
+    <a href="{% url 'article_create' %}">Добавить статью</a>
+  {% endif %}
+
   <table class="table table-striped">
     <thead>
       <tr>
         <th scope="col">Заголовок</th>
         <th scope="col">Дата</th>
         <th scope="col">Тизер</th>
+        {% if perms.news_portal.change_post or perms.news_portal.delete_post %}
+          <th>Действия</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -36,6 +45,16 @@
               {{ post.body|truncatechars:20 }}
             </a>
           </td>
+          {% if perms.news_portal.change_post or perms.news_portal.delete_post %}
+            <td>
+              {% if perms.news_portal.change_post %}
+                <a href="{% url 'post_update' post.id %}">Изменить</a>
+              {% endif %}
+              {% if perms.news_portal.delete_post %}
+                <a href="{% url 'post_delete' post.id %}">Удалить</a>
+              {% endif %}
+            </td>
+          {% endif %}
         </tr>
       {% endfor %}
     </tbody>

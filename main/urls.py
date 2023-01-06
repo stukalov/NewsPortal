@@ -19,7 +19,9 @@ from news_portal.urls import news_urlpatterns, articles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/", include("allauth.urls")),
+    # path("accounts/", include("django.contrib.auth.urls")),
+    # path("accounts/", include("accounts.urls")),
     path('news/', include(news_urlpatterns)),
     path('articles/', include(articles_urlpatterns)),
 ]
